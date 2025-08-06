@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router"
+import Navbar from "../components/Navbar"
 import Companies from "../pages/Companies"
 import CreateInvoice from "../pages/CreateInvoice"
 import Home from "../pages/Home"
@@ -10,6 +11,7 @@ import SignUp from "../pages/SignUp"
 const AppRouter = () => {
     return (
         <BrowserRouter>
+            <Navbar />
             <Routes>
                 <Route path="/" element={<Home />}></Route>
                 <Route path="/create-invoice" element={<CreateInvoice />}></Route>
