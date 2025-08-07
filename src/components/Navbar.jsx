@@ -1,19 +1,26 @@
-import { NavLink } from "react-router"
 import Container from "./layout/Container"
+import MenuLink from "./MenuLink"
 
 const Navbar = () => {
+    const links = [
+        { path: "/", text: "Home", icon: "house" },
+        { path: "/create-invoice", text: "Create Invoice", icon: "file-pen" },
+        { path: "/my-invoices", text: "My Invoices", icon: "list" },
+        { path: "/companies", text: "Companies", icon: "building" },
+        { path: "/auth", text: "Login", icon: "user" },
+        { path: "/auth/signup", text: "Signup", icon: "user-pen" },
+    ]
     return (
         <div className="bg-slate-950 text-white py-2">
             <Container>
                 <div className="flex items-center">
                     <div>Logo</div>
                     <div className="flex items-center ms-auto">
-                        <NavLink to="/" className="p-2">Home</NavLink>
-                        <NavLink to="/create-invoice" className="p-2">Create Invoice</NavLink>
-                        <NavLink to="/companies" className="p-2">Companies</NavLink>
-                        <NavLink to="/my-invoices" className="p-2">My Invoices</NavLink>
-                        <NavLink to="/login" className="p-2">Login</NavLink>
-                        <NavLink to="/signup" className="p-2">Signup</NavLink>
+                        {
+                            links.map((link) => (
+                                <MenuLink key={link.path} path={link.path} icon={link.icon}>{link.text}</MenuLink>
+                            ))
+                        }
                     </div>
                 </div>
             </Container>
