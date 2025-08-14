@@ -30,8 +30,10 @@ const SignUp = () => {
                 alert("email already exist");
             } else {
                 const response = await fetch("http://localhost:5000/users", config);
+                const user = await response.json();
                 if (response.ok) {
                     alert("user created")
+                    localStorage.setItem("ibuser", JSON.stringify(user));
                     navigate("/create-invoice")
                 }
             }

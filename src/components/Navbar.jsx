@@ -1,3 +1,5 @@
+import { UserCircle2 } from "lucide-react"
+import { useEffect, useState } from "react"
 import Container from "./layout/Container"
 import MenuLink from "./MenuLink"
 
@@ -10,6 +12,14 @@ const Navbar = () => {
         { path: "/auth", text: "Login", icon: "user" },
         { path: "/auth/signup", text: "Signup", icon: "user-pen" },
     ]
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const localUser = JSON.parse(localStorage.getItem("ibuser"));
+        setUser(localUser);
+    }, [])
+
     return (
         <div className="bg-slate-950 text-white py-2">
             <Container>
@@ -20,6 +30,10 @@ const Navbar = () => {
                             links.map((link) => (
                                 <MenuLink key={link.path} path={link.path} icon={link.icon}>{link.text}</MenuLink>
                             ))
+                        }
+                        {
+                            user &&
+                            <button className="flex items-center gap-2"><UserCircle2 /> {user?.fullname}</button>
                         }
                     </div>
                 </div>

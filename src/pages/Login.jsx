@@ -19,6 +19,7 @@ const Login = () => {
             const users = await response.json();
             if (users.length > 0) {
                 alert("user found, logged in")
+                localStorage.setItem("ibuser", JSON.stringify(users[0]));
                 navigate("/create-invoice")
             } else {
                 alert("email/password is invalid");
