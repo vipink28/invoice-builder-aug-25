@@ -1,7 +1,13 @@
+import { useContext } from "react";
+import { MainContext } from "../main";
 
 const CreateInvoice = () => {
+    const data = useContext(MainContext);
     return (
-        <div>CreateInvoice</div>
+        <div>
+            <h2>{data}</h2>
+            CreateInvoice
+        </div>
     )
 }
 

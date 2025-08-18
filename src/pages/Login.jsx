@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useContext, useState } from "react";
+import AuthContext from "../auth/AuthContext";
 
 const Login = () => {
-    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
     const [formData, setFormData] = useState(null);
     const handleChange = (e) => {
         let { name, value } = e.target;
@@ -12,26 +12,15 @@ const Login = () => {
         }))
     }
 
-    const handleLogin = async (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
-        try {
-            const response = await fetch(`http://localhost:5000/users?email=${formData.email}&password=${formData.password}`, { method: "GET" });
-            const users = await response.json();
-            if (users.length > 0) {
-                alert("user found, logged in")
-                localStorage.setItem("ibuser", JSON.stringify(users[0]));
-                navigate("/create-invoice")
-            } else {
-                alert("email/password is invalid");
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        login(formData)
     }
 
 
     return (
         <div className="py-2">
+
             <h2>Login</h2>
             <form>
                 <div className="mb-3">

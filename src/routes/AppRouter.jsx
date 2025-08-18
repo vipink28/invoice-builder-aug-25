@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router"
+import { AuthProvider } from "../auth/AuthContext"
 import Navbar from "../components/Navbar"
 import Companies from "../pages/Companies"
 import CreateInvoice from "../pages/CreateInvoice"
@@ -13,21 +14,23 @@ import MainLayout from "../pages/layouts/MainLayout"
 const AppRouter = () => {
     return (
         <BrowserRouter>
-            <Navbar />
-            <Routes>
-                <Route path="/auth" element={<AuthLayout />}>
-                    <Route index element={<Login />}></Route>
-                    <Route path="signup" element={<SignUp />}></Route>
-                </Route>
+            <AuthProvider>
+                <Navbar />
+                <Routes>
+                    <Route path="/auth" element={<AuthLayout />}>
+                        <Route index element={<Login />}></Route>
+                        <Route path="signup" element={<SignUp />}></Route>
+                    </Route>
 
-                <Route path="/" element={<MainLayout />}>
-                    <Route index element={<Home />}></Route>
-                    <Route path="create-invoice" element={<CreateInvoice />}></Route>
-                    <Route path="companies" element={<Companies />}></Route>
-                    <Route path="my-invoices" element={<MyInvoices />}></Route>
-                    <Route path="*" element={<PageNotFound />}></Route>
-                </Route>
-            </Routes>
+                    <Route path="/" element={<MainLayout />}>
+                        <Route index element={<Home />}></Route>
+                        <Route path="create-invoice" element={<CreateInvoice />}></Route>
+                        <Route path="companies" element={<Companies />}></Route>
+                        <Route path="my-invoices" element={<MyInvoices />}></Route>
+                        <Route path="*" element={<PageNotFound />}></Route>
+                    </Route>
+                </Routes>
+            </AuthProvider>
         </BrowserRouter>
     )
 }

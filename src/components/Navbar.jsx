@@ -1,9 +1,11 @@
 import { UserCircle2 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useContext } from "react"
+import AuthContext from "../auth/AuthContext"
 import Container from "./layout/Container"
 import MenuLink from "./MenuLink"
 
 const Navbar = () => {
+    const { user } = useContext(AuthContext);
     const links = [
         { path: "/", text: "Home", icon: "house" },
         { path: "/create-invoice", text: "Create Invoice", icon: "file-pen" },
@@ -13,12 +15,7 @@ const Navbar = () => {
         { path: "/auth/signup", text: "Signup", icon: "user-pen" },
     ]
 
-    const [user, setUser] = useState(null);
 
-    useEffect(() => {
-        const localUser = JSON.parse(localStorage.getItem("ibuser"));
-        setUser(localUser);
-    }, [])
 
     return (
         <div className="bg-slate-950 text-white py-2">

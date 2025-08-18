@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useContext, useState } from "react";
+import AuthContext from "../auth/AuthContext";
 
 const SignUp = () => {
-    const navigate = useNavigate();
+    const { signUp } = useContext(AuthContext);
     const [formData, setFormData] = useState(null);
     const handleChange = (e) => {
         let { name, value } = e.target;
@@ -13,35 +13,11 @@ const SignUp = () => {
     }
 
 
-    const handleSignUp = async (e) => {
+    const handleSignUp = (e) => {
         e.preventDefault();
-        //http://localhost:5000/users
-        let config = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(formData)
-        }
-        try {
-            const checkUser = await fetch(`http://localhost:5000/users?email=${formData.email}`, { method: "GET" });
-            const user = await checkUser.json();
-            if (user.length > 0) {
-                alert("email already exist");
-            } else {
-                const response = await fetch("http://localhost:5000/users", config);
-                const user = await response.json();
-                if (response.ok) {
-                    alert("user created")
-                    localStorage.setItem("ibuser", JSON.stringify(user));
-                    navigate("/create-invoice")
-                }
-            }
-
-        } catch (error) {
-            alert(error);
-        }
+        signUp(formData);
     }
+
 
 
     return (
