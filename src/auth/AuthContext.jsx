@@ -59,19 +59,41 @@ export const AuthProvider = ({ children }) => {
     }
 
 
+    // check user status
+    const fetchUserStatus = async (email) => {
+        try {
+            const response = await fetch(`http://localhost:5000/users?email=${email}`, { method: "GET" })
+            const user = await response.json();
+            if (user.length > 0) {
+                setUser(user[0])
+            } else {
+                localStorage.removeItem("ibuser");
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    const logout = () => {
+        localStorage.removeItem("ibuser");
+        setUser(null);
+        navigate("/auth")
+    }
 
     //get user from localstorage
     useEffect(() => {
         const localUser = JSON.parse(localStorage.getItem("ibuser"));
-        setUser(localUser);
+        if (localUser) {
+            fetchUserStatus(localUser.email);
+        }
     }, [])
 
     return (
         <AuthContext.Provider value={{
             user,
             signUp,
-            login
+            login,
+            logout
         }}>
             {children}
         </AuthContext.Provider>

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router"
 import { AuthProvider } from "../auth/AuthContext"
+import ProtectedRoute from "../auth/ProtectedRoute"
 import Navbar from "../components/Navbar"
 import Companies from "../pages/Companies"
 import CreateInvoice from "../pages/CreateInvoice"
@@ -24,9 +25,9 @@ const AppRouter = () => {
 
                     <Route path="/" element={<MainLayout />}>
                         <Route index element={<Home />}></Route>
-                        <Route path="create-invoice" element={<CreateInvoice />}></Route>
-                        <Route path="companies" element={<Companies />}></Route>
-                        <Route path="my-invoices" element={<MyInvoices />}></Route>
+                        <Route path="create-invoice" element={<ProtectedRoute><CreateInvoice /></ProtectedRoute>}></Route>
+                        <Route path="companies" element={<ProtectedRoute> <Companies /> </ProtectedRoute>}></Route>
+                        <Route path="my-invoices" element={<ProtectedRoute> <MyInvoices /> </ProtectedRoute>}></Route>
                         <Route path="*" element={<PageNotFound />}></Route>
                     </Route>
                 </Routes>
