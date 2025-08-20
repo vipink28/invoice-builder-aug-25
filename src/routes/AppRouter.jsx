@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router"
 import { AuthProvider } from "../auth/AuthContext"
 import ProtectedRoute from "../auth/ProtectedRoute"
 import Navbar from "../components/Navbar"
+import { InvoiceProvider } from "../context/InvoiceContext"
 import Companies from "../pages/Companies"
 import CreateInvoice from "../pages/CreateInvoice"
 import Home from "../pages/Home"
@@ -16,21 +17,23 @@ const AppRouter = () => {
     return (
         <BrowserRouter>
             <AuthProvider>
-                <Navbar />
-                <Routes>
-                    <Route path="/auth" element={<AuthLayout />}>
-                        <Route index element={<Login />}></Route>
-                        <Route path="signup" element={<SignUp />}></Route>
-                    </Route>
+                <InvoiceProvider>
+                    <Navbar />
+                    <Routes>
+                        <Route path="/auth" element={<AuthLayout />}>
+                            <Route index element={<Login />}></Route>
+                            <Route path="signup" element={<SignUp />}></Route>
+                        </Route>
 
-                    <Route path="/" element={<MainLayout />}>
-                        <Route index element={<Home />}></Route>
-                        <Route path="create-invoice" element={<ProtectedRoute><CreateInvoice /></ProtectedRoute>}></Route>
-                        <Route path="companies" element={<ProtectedRoute> <Companies /> </ProtectedRoute>}></Route>
-                        <Route path="my-invoices" element={<ProtectedRoute> <MyInvoices /> </ProtectedRoute>}></Route>
-                        <Route path="*" element={<PageNotFound />}></Route>
-                    </Route>
-                </Routes>
+                        <Route path="/" element={<MainLayout />}>
+                            <Route index element={<Home />}></Route>
+                            <Route path="create-invoice" element={<ProtectedRoute><CreateInvoice /></ProtectedRoute>}></Route>
+                            <Route path="companies" element={<ProtectedRoute> <Companies /> </ProtectedRoute>}></Route>
+                            <Route path="my-invoices" element={<ProtectedRoute> <MyInvoices /> </ProtectedRoute>}></Route>
+                            <Route path="*" element={<PageNotFound />}></Route>
+                        </Route>
+                    </Routes>
+                </InvoiceProvider>
             </AuthProvider>
         </BrowserRouter>
     )

@@ -19,7 +19,6 @@ const SignUp = () => {
     }
 
 
-
     return (
         <div className="py-2">
             <h2>Sign Up</h2>
