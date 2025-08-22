@@ -1,6 +1,8 @@
-import { X } from "lucide-react"
+import { X } from "lucide-react";
+import CompanyForm from "./forms/CompanyForm";
 
-const Popup = ({ type, onClose }) => {
+const Popup = ({ state, onClose }) => {
+    const { type, data } = state;
     return (
         <div className="fixed w-screen h-screen left-0 top-0 z-30 bg-black/50 flex flex-col justify-center items-center">
             <div className="bg-white text-slate-950 w-full max-w-3xl">
@@ -12,7 +14,9 @@ const Popup = ({ type, onClose }) => {
                         type === "view" ?
                             <div>View</div>
                             : type === "edit" ?
-                                <div>Edit</div>
+                                <div>
+                                    <CompanyForm />
+                                </div>
                                 : <div>Delete</div>
                     }
                 </div>

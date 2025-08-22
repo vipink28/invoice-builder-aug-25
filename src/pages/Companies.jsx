@@ -1,13 +1,21 @@
 import { Eye, Pen, Trash } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import AuthContext from "../auth/AuthContext";
 import Button from "../components/forms/Button";
 import CompanyForm from "../components/forms/CompanyForm";
 import Popup from "../components/Popup";
 import InvoiceContext from "../context/InvoiceContext";
+// action is an object with two properties - type and payload(optional)
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "VIEW": return { type: "view", data: action.payload };
+        case "EDIT": return { type: "edit", data: action.payload };
+        case "DELETE": return { type: "delete", data: action.payload };
+        default: return state;
+    }
+}
 
 const Companies = () => {
-
     const { getCompaniesList } = useContext(InvoiceContext);
     const { user } = useContext(AuthContext);
     const [showCompanyForm, setShowCompanyForm] = useState(false);
@@ -15,9 +23,8 @@ const Companies = () => {
     const [showPopup, setShowPopup] = useState(false);
 
     //useReducer - for complex state handling
-
-
-
+    // dispatch method takes action object as an argument - dispatch({type:"", payload:""})
+    const [state, dispatch] = useReducer(reducer, { type: null, data: null });
     const getCompanies = async (userid) => {
         let companies = await getCompaniesList(userid);
         setCompanyList(companies);
@@ -61,18 +68,27 @@ const Companies = () => {
                         <tbody>
                             {
                                 companyList ?
-                                    companyList.map(({ companyname, phone, email, city, pincode, taxnumber }) => (
-                                        <tr className="border-b border-b-slate-400">
-                                            <td className="p-2">{companyname}</td>
-                                            <td className="p-2">{phone}</td>
-                                            <td className="p-2">{email}</td>
-                                            <td className="p-2">{city}</td>
-                                            <td className="p-2">{pincode}</td>
-                                            <td className="p-2">{taxnumber}</td>
+                                    companyList.map((company) => (
+                                        <tr key={company.id} className="border-b border-b-slate-400">
+                                            <td className="p-2">{company.companyname}</td>
+                                            <td className="p-2">{company.phone}</td>
+                                            <td className="p-2">{company.email}</td>
+                                            <td className="p-2">{company.city}</td>
+                                            <td className="p-2">{company.pincode}</td>
+                                            <td className="p-2">{company.taxnumber}</td>
                                             <td className="p-2">
-                                                <button className="p-2 cursor-pointer" onClick={() => setShowPopup(true)}><Eye className="w-5 h-5 text-green-500" /></button>
-                                                <button className="p-2 cursor-pointer" onClick={() => setShowPopup(true)}><Pen className="w-5 h-5 text-blue-400" /></button>
-                                                <button className="p-2 cursor-pointer" onClick={() => setShowPopup(true)}><Trash className="w-5 h-5 text-red-500" /></button>
+                                                <button className="p-2 cursor-pointer" onClick={() => {
+                                                    dispatch({ type: "VIEW", payload: company })
+                                                    setShowPopup(true)
+                                                }}><Eye className="w-5 h-5 text-green-500" /></button>
+                                                <button className="p-2 cursor-pointer" onClick={() => {
+                                                    dispatch({ type: "EDIT", payload: company })
+                                                    setShowPopup(true)
+                                                }}><Pen className="w-5 h-5 text-blue-400" /></button>
+                                                <button className="p-2 cursor-pointer" onClick={() => {
+                                                    dispatch({ type: "DELETE", payload: company.id })
+                                                    setShowPopup(true)
+                                                }}><Trash className="w-5 h-5 text-red-500" /></button>
                                             </td>
                                         </tr>
                                     )) :
@@ -86,7 +102,7 @@ const Companies = () => {
             </div>
             {
                 showPopup &&
-                <Popup type="view" onClose={() => { setShowPopup(false) }} />
+                <Popup state={state} onClose={() => { setShowPopup(false) }} />
             }
         </>
     )
