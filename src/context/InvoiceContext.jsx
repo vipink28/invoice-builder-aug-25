@@ -20,6 +20,7 @@ export const InvoiceProvider = ({ children }) => {
             if (response.status === 201) {
                 toast.success("New company added");
             }
+            return response;
         } catch (error) {
             console.log(error)
             toast.error("Failed operation, please try again")
@@ -48,16 +49,14 @@ export const InvoiceProvider = ({ children }) => {
 
 
     //get all companies
-
     const getCompaniesList = async (userid) => {
         const config = {
             method: "GET"
         }
         try {
-            const response = await fetch(`${baseUrl}/companies`, config);
-            if (response.status === 200) {
-                toast.success("New company added");
-            }
+            const response = await fetch(`${baseUrl}/companies?userid=${userid}`, config);
+            const companies = await response.json();
+            return companies;
         } catch (error) {
             console.log(error)
             toast.error("Failed operation, please try again")
@@ -100,7 +99,8 @@ export const InvoiceProvider = ({ children }) => {
 
     return (
         <InvoiceContext.Provider value={{
-            addCompany
+            addCompany,
+            getCompaniesList
         }}>
             {children}
         </InvoiceContext.Provider>

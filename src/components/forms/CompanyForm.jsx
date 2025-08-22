@@ -1,20 +1,24 @@
 import { useContext, useState } from "react";
+import AuthContext from "../../auth/AuthContext";
 import InvoiceContext from "../../context/InvoiceContext";
 import Button from "./Button";
 import InputField from "./InputField";
 
 const CompanyForm = ({ setShowCompanyForm }) => {
     const { addCompany } = useContext(InvoiceContext);
+    const { user } = useContext(AuthContext);
     const [formData, setFormData] = useState(null);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
-            [name]: value
+            [name]: value,
+            userid: user.id,
+            modifiedon: Date()
         }))
     }
 
-    const saveForm = () => {
+    const saveForm = async () => {
         addCompany(formData);
     }
 
@@ -33,6 +37,7 @@ const CompanyForm = ({ setShowCompanyForm }) => {
                 <InputField name="pincode" id="pincode" label="Pin Code" onChange={handleChange} />
                 <InputField name="country" id="country" label="Country" onChange={handleChange} />
                 <InputField name="email" id="email" label="Email" onChange={handleChange} />
+                <InputField name="phone" id="phone" label="Phone" onChange={handleChange} />
                 <InputField name="website" id="website" label="Website" onChange={handleChange} />
             </div>
             <div className="flex gap-3 mt-5">
