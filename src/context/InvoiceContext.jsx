@@ -39,7 +39,7 @@ export const InvoiceProvider = ({ children }) => {
         try {
             const response = await fetch(`${baseUrl}/companies/${data.id}`, config);
             if (response.status === 200) {
-                toast.success("New company added");
+                toast.success("company updated successfully");
             }
         } catch (error) {
             console.log(error)
@@ -100,7 +100,9 @@ export const InvoiceProvider = ({ children }) => {
     return (
         <InvoiceContext.Provider value={{
             addCompany,
-            getCompaniesList
+            getCompaniesList,
+            updateCompany,
+            deleteCompany
         }}>
             {children}
         </InvoiceContext.Provider>

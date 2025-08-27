@@ -29,7 +29,6 @@ const Companies = () => {
         let companies = await getCompaniesList(userid);
         setCompanyList(companies);
     }
-
     useEffect(() => {
         if (user) {
             getCompanies(user.id);
@@ -86,7 +85,7 @@ const Companies = () => {
                                                     setShowPopup(true)
                                                 }}><Pen className="w-5 h-5 text-blue-400" /></button>
                                                 <button className="p-2 cursor-pointer" onClick={() => {
-                                                    dispatch({ type: "DELETE", payload: company.id })
+                                                    dispatch({ type: "DELETE", payload: company })
                                                     setShowPopup(true)
                                                 }}><Trash className="w-5 h-5 text-red-500" /></button>
                                             </td>

@@ -1,7 +1,7 @@
 import { DynamicIcon } from "lucide-react/dynamic";
 
 const Button = ({ children, type, onClick, className, icon, style }) => {
-    const primary = "bg-slate-700 hover:bg-slate-600";
+    const primary = "bg-slate-700 text-white hover:bg-slate-600";
     const secondary = "bg-gray-200 text-slate-900 hover:bg-slate-300";
     const alternate = "bg-red-400 hover:bg-red-500";
     return (
