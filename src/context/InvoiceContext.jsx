@@ -1,10 +1,24 @@
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import toast from "react-hot-toast";
+import { invoiceSchema } from "../../invoiceSchema";
 import { baseUrl } from "../helper";
 
 const InvoiceContext = createContext();
 
 export const InvoiceProvider = ({ children }) => {
+
+    const [invoice, setInvoice] = useState(invoiceSchema);
+
+
+
+
+
+
+
+
+
+
+
 
     //add a company
     const addCompany = async (data) => {

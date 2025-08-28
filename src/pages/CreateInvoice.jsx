@@ -1,12 +1,10 @@
-import { useContext } from "react";
-import { MainContext } from "../main";
+import InvoiceHeader from "../components/invoice/InvoiceHeader"
 
 const CreateInvoice = () => {
-    const data = useContext(MainContext);
     return (
-        <div>
-            <h2>{data}</h2>
-            CreateInvoice
+        <div className="bg-white text-slate-950 p-4">
+            <InvoiceHeader />
+
         </div>
     )
 }

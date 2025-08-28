@@ -1,5 +1,6 @@
 
 const InputField = ({ type, name, placeholder, label, value, className, onChange, onBlur, id, required }) => {
+
     return (
         <div className="mb-3">
             {
