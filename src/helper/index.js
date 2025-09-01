@@ -12,3 +12,8 @@ export const convertBase64 = (file) => {
         };
     });
 };
+
+//format date in ISO
+export const formatDate = (date) => {
+    return date.toISOString().split("T")[0];
+};

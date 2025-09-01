@@ -10,14 +10,15 @@ export const InvoiceProvider = ({ children }) => {
     const [invoice, setInvoice] = useState(invoiceSchema);
 
 
-
-
-
-
-
-
-
-
+    const handleInvoice = (data) => {
+        console.log(data); // {logo:""}
+        setInvoice((prev) => {
+            return ({
+                ...prev,
+                ...data
+            })
+        })
+    }
 
 
     //add a company
@@ -116,7 +117,8 @@ export const InvoiceProvider = ({ children }) => {
             addCompany,
             getCompaniesList,
             updateCompany,
-            deleteCompany
+            deleteCompany,
+            handleInvoice
         }}>
             {children}
         </InvoiceContext.Provider>
