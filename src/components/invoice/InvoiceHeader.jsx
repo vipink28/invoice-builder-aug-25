@@ -2,6 +2,7 @@ import { Image } from "lucide-react";
 import { useContext, useState } from "react";
 import InvoiceContext from "../../context/InvoiceContext";
 import { convertBase64, formatDate } from "../../helper";
+import Button from "../forms/Button";
 
 const InvoiceHeader = () => {
     const { handleInvoice } = useContext(InvoiceContext);
@@ -45,8 +46,12 @@ const InvoiceHeader = () => {
                     <input type="file" id="logoselector" name="logo" className="hidden" onChange={handleLogo} />
                     {
                         headerData?.logo &&
-                        <img src={headerData.logo} alt="logo" className="h-20 object-contain mt-4" />
+                        <>
+                            <img src={headerData.logo} alt="logo" className="h-20 object-contain mt-4" />
+                            <Button style="primary" className="mt-3" onClick={() => handleInvoice(headerData)}>Save Logo</Button>
+                        </>
                     }
+
                 </div>
                 <div>
                     <select name="invoicetype" defaultValue={headerData.invoicetype} className="appearance-none border border-slate-400 bg-white text-slate-950 w-full h-10 px-3 focus:outline-none" onChange={handleHeaderData} onBlur={() => handleInvoice(headerData)}>

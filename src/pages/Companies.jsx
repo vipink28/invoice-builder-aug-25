@@ -40,8 +40,8 @@ const Companies = () => {
             {
                 showCompanyForm &&
                 <div className="fixed w-screen h-screen left-0 top-0 bg-black/30 flex justify-center items-center z-20">
-                    <div className="bg-slate-800 w-full max-w-3xl p-4">
-                        <CompanyForm setShowCompanyForm={setShowCompanyForm} />
+                    <div className="bg-slate-800 text-white w-full max-w-3xl p-4">
+                        <CompanyForm onClose={() => setShowCompanyForm(false)} />
                     </div>
                 </div>
             }

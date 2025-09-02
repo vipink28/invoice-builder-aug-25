@@ -4,7 +4,7 @@ import InvoiceContext from "../../context/InvoiceContext";
 import Button from "./Button";
 import InputField from "./InputField";
 
-const CompanyForm = ({ setShowCompanyForm, edit, data, onClose }) => {
+const CompanyForm = ({ edit, data, onClose, companyType, addCompanyData }) => {
     const init = {
         companyname: "", firstname: "", lastname: "", taxnumber: "", addressline1: "", addressline2: "", city: "", state: "", country: "", pincode: "", email: "", phone: "", website: ""
     }
@@ -24,17 +24,16 @@ const CompanyForm = ({ setShowCompanyForm, edit, data, onClose }) => {
     const saveForm = async () => {
         if (edit) {
             updateCompany(formData);
-        } else {
+        } else if (addCompanyData) {
+            addCompanyData(formData)
+        }
+        else {
             addCompany(formData);
         }
     }
 
     const handleCancel = () => {
-        if (edit) {
-            onClose();
-        } else {
-            setShowCompanyForm(false);
-        }
+        onClose();
     }
 
     useEffect(() => {
@@ -61,6 +60,13 @@ const CompanyForm = ({ setShowCompanyForm, edit, data, onClose }) => {
                 <InputField name="email" id="email" label="Email" onChange={handleChange} value={formData.email} />
                 <InputField name="phone" id="phone" label="Phone" onChange={handleChange} value={formData.phone} />
                 <InputField name="website" id="website" label="Website" onChange={handleChange} value={formData.website} />
+                <div>
+                    <label className="font-semibold mb-3 block">Company Type</label>
+                    <select defaultValue={companyType || "recipient"} className="appearance-none border border-slate-400 bg-white text-slate-950 w-full h-10 px-3 focus:outline-none" disabled={companyType ? true : false}>
+                        <option value="sender">Sender</option>
+                        <option value="recipient">Recipient</option>
+                    </select>
+                </div>
             </div>
             <div className="flex gap-3 mt-5">
                 <Button style="primary" onClick={saveForm}>{edit ? "Update Comapany" : "Add Company"}</Button>

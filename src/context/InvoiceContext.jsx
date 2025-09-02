@@ -11,7 +11,6 @@ export const InvoiceProvider = ({ children }) => {
 
 
     const handleInvoice = (data) => {
-        console.log(data); // {logo:""}
         setInvoice((prev) => {
             return ({
                 ...prev,
