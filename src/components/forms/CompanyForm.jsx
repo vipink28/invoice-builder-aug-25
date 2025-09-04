@@ -8,7 +8,7 @@ const CompanyForm = ({ edit, data, onClose, companyType, addCompanyData }) => {
     const init = {
         companyname: "", firstname: "", lastname: "", taxnumber: "", addressline1: "", addressline2: "", city: "", state: "", country: "", pincode: "", email: "", phone: "", website: ""
     }
-    const { addCompany, updateCompany } = useContext(InvoiceContext);
+    const { addCompany, updateCompany, handleInvoice } = useContext(InvoiceContext);
     const { user } = useContext(AuthContext);
     const [formData, setFormData] = useState(init);
     const handleChange = (e) => {
@@ -26,6 +26,7 @@ const CompanyForm = ({ edit, data, onClose, companyType, addCompanyData }) => {
             updateCompany(formData);
         } else if (addCompanyData) {
             addCompanyData(formData)
+            handleInvoice({ [companyType]: formData })
         }
         else {
             addCompany(formData);
