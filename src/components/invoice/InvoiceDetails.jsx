@@ -1,11 +1,28 @@
-import { Check, Trash } from "lucide-react";
-import { useState } from "react";
+import { Check, Pen, Trash } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
+import InvoiceContext from "../../context/InvoiceContext";
 import InputField from "../forms/InputField";
 
 const InvoiceDetails = () => {
-    const init = { id: 0, name: "", quantity: 0, unitprice: 0, taxname: "", taxvalue: 0, subtotal: 0, description: "" }
+    const { handleInvoice } = useContext(InvoiceContext)
+    const init = { id: 0, name: "", quantity: 0, unitprice: 0, taxname: "", taxvalue: 0, subtotal: 0, description: "", saved: false }
     const [itemsList, setItemsList] = useState([]);
     const [itemData, setItemData] = useState(init);
+    const [invoiceTotal, setInvoiceTotal] = useState({
+        subTotal: 0,
+        tax: 0,
+        grandTotal: 0
+    })
+    const calculateTotal = () => {
+        let subtotal = 0;
+        let tax = 0
+        itemsList.map((item) => {
+            subtotal += Number(item.subtotal)
+            tax += Number(item.taxvalue)
+        })
+
+        setInvoiceTotal({ subtotal, tax, grandtotal: subtotal + tax })
+    }
 
     const handleAddNewItem = () => {
         const prevId = itemsList.length > 0 ? itemsList[itemsList.length - 1].id + 1 : 0;
@@ -28,9 +45,23 @@ const InvoiceDetails = () => {
     }
 
     const handleSaveItem = (id) => {
-        console.log(id)
-        setItemsList([])
+        setItemsList((prev) => prev.map((item) => item.id === id ? { ...itemData, id: id, saved: true } : item));
+        setItemData(init);
+        handleInvoice({ invoiceItems: itemsList })
     }
+
+    const handleItemEdit = (id) => {
+        const selectedItem = itemsList.find((item) => item.id === id);
+        setItemsList((prev) => prev.map((item) => item.id === id ? { ...item, saved: false } : item));
+        setItemData({ ...selectedItem, saved: false })
+    }
+
+    useEffect(() => {
+        if (itemsList.length > 0) {
+
+            calculateTotal();
+        }
+    }, [itemsList])
 
     return (
         <>
@@ -58,28 +89,55 @@ const InvoiceDetails = () => {
                         itemsList.map((item, index) => (
                             <div key={item.id} className="grid grid-cols-6 gap-4">
                                 <div className="col-span-2 p-2">
-                                    <InputField name="name" value={itemData.name} onChange={handleItemData} />
+                                    {
+                                        item.saved ?
+                                            <p>{item.name}</p> :
+                                            <InputField name="name" value={itemData.name} onChange={handleItemData} />
+                                    }
                                 </div>
                                 <div className="p-2">
-                                    <InputField name="quantity" value={itemData.quantity} onChange={handleItemData} />
+                                    {
+                                        item.saved ?
+                                            <p>{item.quantity}</p> :
+                                            <InputField name="quantity" value={itemData.quantity} onChange={handleItemData} />
+                                    }
                                 </div>
                                 <div className="p-2">
-                                    <InputField name="unitprice" value={itemData.unitprice} onChange={handleItemData} />
+                                    {
+                                        item.saved ?
+                                            <p>{item.unitprice}</p> :
+                                            <InputField name="unitprice" value={itemData.unitprice} onChange={handleItemData} />
+                                    }
                                 </div>
                                 <div className="p-2">
                                     Tax
                                 </div>
                                 <div className="p-2">
-                                    ₹{itemData.subtotal}
+                                    {
+                                        item.saved ?
+                                            <p>₹{item.subtotal}</p> :
+                                            <p>₹{itemData.subtotal}</p>
+                                    }
                                 </div>
 
                                 <div className="col-span-4 p-2">
-                                    <InputField name="description" value={itemData.description} onChange={handleItemData} />
+                                    {
+                                        item.saved ?
+                                            <p>{item.description}</p> :
+                                            <InputField name="description" value={itemData.description} onChange={handleItemData} />
+                                    }
                                 </div>
                                 <div className="p-2">
-                                    <button onClick={() => handleSaveItem(item.id)}>
-                                        <Check className="w-5 h-5" />
-                                    </button>
+                                    {
+                                        item.saved ?
+                                            <button onClick={() => handleItemEdit(item.id)}>
+                                                <Pen className="w-5 h-5" />
+                                            </button>
+                                            :
+                                            <button onClick={() => handleSaveItem(item.id)}>
+                                                <Check className="w-5 h-5" />
+                                            </button>
+                                    }
                                     <button>
                                         <Trash className="w-5 h-5" />
                                     </button>
@@ -90,6 +148,8 @@ const InvoiceDetails = () => {
                 </>
             }
             <button onClick={handleAddNewItem}>Add New Item</button>
+
+
         </>
     )
 }
