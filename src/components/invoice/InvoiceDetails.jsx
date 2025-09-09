@@ -1,17 +1,22 @@
 import { Check, Pen, Trash } from "lucide-react";
 import { useContext, useEffect, useState } from "react";
 import InvoiceContext from "../../context/InvoiceContext";
+import Button from "../forms/Button";
 import InputField from "../forms/InputField";
+import InvoicePreview from "./InvoicePreview";
 
 const InvoiceDetails = () => {
     const { handleInvoice } = useContext(InvoiceContext)
     const init = { id: 0, name: "", quantity: 0, unitprice: 0, taxname: "", taxvalue: 0, subtotal: 0, description: "", saved: false }
     const [itemsList, setItemsList] = useState([]);
     const [itemData, setItemData] = useState(init);
+    const [showPreview, setshowPreview] = useState(false);
+    const [disableNewItem, setDisableNewItem] = useState(false);
+    const [disableSaveBtn, setDisableSaveBtn] = useState(false);
     const [invoiceTotal, setInvoiceTotal] = useState({
-        subTotal: 0,
+        subtotal: 0,
         tax: 0,
-        grandTotal: 0
+        grandtotal: 0
     })
     const calculateTotal = () => {
         let subtotal = 0;
@@ -22,6 +27,7 @@ const InvoiceDetails = () => {
         })
 
         setInvoiceTotal({ subtotal, tax, grandtotal: subtotal + tax })
+        handleInvoice({ subtotal, tax, total: subtotal + tax })
     }
 
     const handleAddNewItem = () => {
@@ -30,6 +36,7 @@ const InvoiceDetails = () => {
             ...prev,
             { ...init, id: prevId }
         ])
+        setDisableNewItem(true);
     }
 
     const handleItemData = (e) => {
@@ -47,18 +54,24 @@ const InvoiceDetails = () => {
     const handleSaveItem = (id) => {
         setItemsList((prev) => prev.map((item) => item.id === id ? { ...itemData, id: id, saved: true } : item));
         setItemData(init);
-        handleInvoice({ invoiceItems: itemsList })
+        handleInvoice({ invoiceitems: itemsList })
+        setDisableNewItem(false);
     }
 
     const handleItemEdit = (id) => {
         const selectedItem = itemsList.find((item) => item.id === id);
         setItemsList((prev) => prev.map((item) => item.id === id ? { ...item, saved: false } : item));
         setItemData({ ...selectedItem, saved: false })
+        setDisableNewItem(true);
+    }
+
+    const handleRemoveItem = (id) => {
+        const filtered = itemsList.filter((item) => item.id !== id);
+        setItemsList(filtered);
     }
 
     useEffect(() => {
         if (itemsList.length > 0) {
-
             calculateTotal();
         }
     }, [itemsList])
@@ -134,11 +147,11 @@ const InvoiceDetails = () => {
                                                 <Pen className="w-5 h-5" />
                                             </button>
                                             :
-                                            <button onClick={() => handleSaveItem(item.id)}>
+                                            <button disabled={disableSaveBtn} onClick={() => handleSaveItem(item.id)}>
                                                 <Check className="w-5 h-5" />
                                             </button>
                                     }
-                                    <button>
+                                    <button onClick={() => handleRemoveItem(item.id)}>
                                         <Trash className="w-5 h-5" />
                                     </button>
                                 </div>
@@ -147,8 +160,35 @@ const InvoiceDetails = () => {
                     }
                 </>
             }
-            <button onClick={handleAddNewItem}>Add New Item</button>
+            <button disabled={disableNewItem} onClick={handleAddNewItem}>Add New Item</button>
 
+
+            <div className="mt-10 flex justify-end">
+                <div className="w-96 flex flex-col gap-4">
+                    <div className="flex justify-between">
+                        <p className="font-semibold">Sub Total:</p>
+                        <p>{invoiceTotal.subtotal}</p>
+                    </div>
+
+                    <div className="flex justify-between">
+                        <p className="font-semibold">Tax:</p>
+                        <p>{invoiceTotal.tax}</p>
+                    </div>
+
+                    <div className="flex justify-between">
+                        <p className="font-semibold">Total:</p>
+                        <p>{invoiceTotal.grandtotal}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div className="mt-5 flex justify-center gap-6">
+                <Button style="primary" onClick={() => setshowPreview(true)}>Preview</Button>
+                <Button style="primary">Download</Button>
+            </div>
+            {
+                showPreview && <InvoicePreview />
+            }
 
         </>
     )

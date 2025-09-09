@@ -117,7 +117,8 @@ export const InvoiceProvider = ({ children }) => {
             getCompaniesList,
             updateCompany,
             deleteCompany,
-            handleInvoice
+            handleInvoice,
+            invoice
         }}>
             {children}
         </InvoiceContext.Provider>
