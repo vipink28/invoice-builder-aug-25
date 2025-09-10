@@ -1,5 +1,5 @@
 export const invoiceSchema = {
-    logo: "",
+    logo: null,
     invoicenumber: "",
     invoicetype: "",
     issuedate: "",

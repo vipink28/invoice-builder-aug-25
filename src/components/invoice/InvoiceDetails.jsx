@@ -183,8 +183,8 @@ const InvoiceDetails = () => {
             </div>
 
             <div className="mt-5 flex justify-center gap-6">
-                <Button style="primary" onClick={() => setshowPreview(true)}>Preview</Button>
-                <Button style="primary">Download</Button>
+                <Button style="primary" onClick={() => setshowPreview(true)}>Preview & Download</Button>
+
             </div>
             {
                 showPreview && <InvoicePreview />
