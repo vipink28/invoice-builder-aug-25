@@ -8,8 +8,6 @@ const InvoiceContext = createContext();
 export const InvoiceProvider = ({ children }) => {
 
     const [invoice, setInvoice] = useState(invoiceSchema);
-
-
     const handleInvoice = (data) => {
         setInvoice((prev) => {
             return ({
