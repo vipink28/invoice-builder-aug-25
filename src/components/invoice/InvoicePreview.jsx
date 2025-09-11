@@ -1,11 +1,13 @@
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { useContext, useRef } from "react";
+import AuthContext from "../../auth/AuthContext";
 import InvoiceContext from "../../context/InvoiceContext";
 import Button from "../forms/Button";
 
-const InvoicePreview = () => {
-    const { invoice } = useContext(InvoiceContext);
+const InvoicePreview = ({ onClose }) => {
+    const { user } = useContext(AuthContext)
+    const { invoice, addInvoice } = useContext(InvoiceContext);
     const invoiceRef = useRef(null);
 
 
@@ -49,8 +51,9 @@ const InvoicePreview = () => {
 
             const timestamp = new Date().toISOString().split("T")[0];
             const fileName = `${invoice.recipient.companyname || "Invoice"}_${invoice.issuedate}_${timestamp}.pdf`;
-
+            addInvoice({ ...invoice, userid: user.id })
             pdf.save(fileName);
+
         } catch (err) {
             console.error("PDF generation failed:", err);
         }
@@ -134,8 +137,10 @@ const InvoicePreview = () => {
 
                     </div>
                 </div>
-
-                <Button style="primary" onClick={handleDownloadPDF}>Download</Button>
+                <div className="flex justify-center gap-4">
+                    <Button style="primary" onClick={handleDownloadPDF}>Download</Button>
+                    <Button style="secondary" onClick={onClose}>Cancel</Button>
+                </div>
             </div>
         </div>
     )

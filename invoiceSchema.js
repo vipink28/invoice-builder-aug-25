@@ -16,5 +16,5 @@ export const invoiceSchema = {
     subtotal: 0,
     totaltax: 0,
     total: 0,
-    notes: ""
+    notes: "",
 }

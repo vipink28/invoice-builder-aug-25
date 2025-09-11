@@ -19,6 +19,7 @@ const InvoiceDetails = () => {
         grandtotal: 0
     })
     const calculateTotal = () => {
+        debugger
         let subtotal = 0;
         let tax = 0
         itemsList.map((item) => {
@@ -27,7 +28,7 @@ const InvoiceDetails = () => {
         })
 
         setInvoiceTotal({ subtotal, tax, grandtotal: subtotal + tax })
-        handleInvoice({ subtotal, tax, total: subtotal + tax })
+        handleInvoice({ invoiceitems: itemsList, subtotal, tax, total: subtotal + tax })
     }
 
     const handleAddNewItem = () => {
@@ -187,7 +188,7 @@ const InvoiceDetails = () => {
 
             </div>
             {
-                showPreview && <InvoicePreview />
+                showPreview && <InvoicePreview onClose={() => setshowPreview(false)} />
             }
 
         </>

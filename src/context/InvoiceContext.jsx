@@ -20,6 +20,28 @@ export const InvoiceProvider = ({ children }) => {
     }
 
 
+    // save invoice to database
+    const addInvoice = async (data) => {
+        const config = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+        try {
+            const response = await fetch(`${baseUrl}/invoices`, config);
+            if (response.status === 201) {
+                toast.success("New invoice added");
+            }
+            return response;
+        } catch (error) {
+            console.log(error)
+            toast.error("Failed operation, please try again")
+        }
+    }
+
+
     //add a company
     const addCompany = async (data) => {
         const config = {
@@ -40,6 +62,8 @@ export const InvoiceProvider = ({ children }) => {
             toast.error("Failed operation, please try again")
         }
     }
+
+
     //update a company
 
     const updateCompany = async (data) => {
@@ -118,6 +142,7 @@ export const InvoiceProvider = ({ children }) => {
             updateCompany,
             deleteCompany,
             handleInvoice,
+            addInvoice,
             invoice
         }}>
             {children}
