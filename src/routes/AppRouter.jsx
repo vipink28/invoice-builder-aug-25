@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router"
 import AdminLayout from "../admin/AdminLayout"
 import { store } from "../admin/app/store"
 import Dashboard from "../admin/pages/Dashboard"
+import UserDetails from "../admin/pages/UserDetails"
 import Users from "../admin/pages/Users"
 import AuthContext from "../auth/AuthContext"
 import ProtectedRoute from "../auth/ProtectedRoute"
@@ -51,6 +52,7 @@ const AppRouter = () => {
                                     <Route path="/admin" element={<AdminLayout />}>
                                         <Route index element={<Dashboard />}></Route>
                                         <Route path="users" element={<Users />}></Route>
+                                        <Route path="user/:type/:id" element={<UserDetails />}></Route>
                                     </Route>
                                     <Route path="*" element={<Navigate to="/admin" />}></Route>
                                 </Routes>
