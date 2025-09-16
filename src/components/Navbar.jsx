@@ -1,11 +1,10 @@
 import { UserCircle2 } from "lucide-react"
-import { useContext, useState } from "react"
-import AuthContext from "../auth/AuthContext"
+import { useState } from "react"
 import Container from "./layout/Container"
 import MenuLink from "./MenuLink"
 
-const Navbar = () => {
-    const { user, logout } = useContext(AuthContext);
+const Navbar = ({ user, logout, adminEmail }) => {
+
     const [dropdown, setDropdown] = useState(false);
     const links = [
         { path: "/", text: "Home", icon: "house" },
@@ -19,6 +18,11 @@ const Navbar = () => {
         { path: "/companies", text: "Companies", icon: "building" },
     ]
 
+    const adminLinks = [
+        { path: "/admin", text: "Dashboard", icon: "layout-dashboard" },
+        { path: "/admin/users", text: "Users List", icon: "book-user" }
+    ]
+
 
     return (
         <div className="bg-slate-950 text-white py-2">
@@ -28,9 +32,18 @@ const Navbar = () => {
                     <div className="flex items-center ms-auto">
                         {
                             user ?
-                                authenticatedLinks.map((link) => (
-                                    <MenuLink key={link.path} path={link.path} icon={link.icon}>{link.text}</MenuLink>
-                                )) :
+                                <>
+                                    {
+                                        user.email === adminEmail ?
+                                            adminLinks.map((link) => (
+                                                <MenuLink key={link.path} path={link.path} icon={link.icon}>{link.text}</MenuLink>
+                                            )) :
+                                            authenticatedLinks.map((link) => (
+                                                <MenuLink key={link.path} path={link.path} icon={link.icon}>{link.text}</MenuLink>
+                                            ))
+                                    }
+                                </>
+                                :
                                 links.map((link) => (
                                     <MenuLink key={link.path} path={link.path} icon={link.icon}>{link.text}</MenuLink>
                                 ))
