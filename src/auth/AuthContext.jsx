@@ -1,5 +1,7 @@
 import { createContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { baseUrl } from "../helper";
 
 const AuthContext = createContext();
 
@@ -80,6 +82,31 @@ export const AuthProvider = ({ children }) => {
         navigate("/auth")
     }
 
+
+
+    //user crud methods
+    const updateUser = async (data) => {
+        const config = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        }
+        try {
+            const response = await fetch(`${baseUrl}/users/${data.id}`, config);
+            if (response.status === 200) {
+                toast.success("User updated successfully");
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error("Failed operation, please try again")
+        }
+    }
+
+
+
+
     //get user from localstorage
     useEffect(() => {
         const localUser = JSON.parse(localStorage.getItem("ibuser"));
@@ -93,7 +120,8 @@ export const AuthProvider = ({ children }) => {
             user,
             signUp,
             login,
-            logout
+            logout,
+            updateUser
         }}>
             {children}
         </AuthContext.Provider>

@@ -1,5 +1,6 @@
 import { UserCircle2 } from "lucide-react"
 import { useState } from "react"
+import logo from "../assets/logo.jpg"
 import Container from "./layout/Container"
 import MenuLink from "./MenuLink"
 
@@ -28,7 +29,9 @@ const Navbar = ({ user, logout, adminEmail }) => {
         <div className="bg-slate-950 text-white py-2">
             <Container>
                 <div className="flex items-center">
-                    <div>Logo</div>
+                    <div>
+                        <img src={logo} alt="logo" />
+                    </div>
                     <div className="flex items-center ms-auto">
                         {
                             user ?

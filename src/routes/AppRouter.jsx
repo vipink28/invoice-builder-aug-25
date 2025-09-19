@@ -60,7 +60,7 @@ const AppRouter = () => {
                     }
                 </>
             }
-        </InvoiceProvider >
+        </InvoiceProvider>
     )
 }
 
